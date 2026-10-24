@@ -44,6 +44,10 @@ bool Paciente::getTrauma() const
 {
     return trauma;
 }
+double Paciente::getTemperatura() const
+{
+    return temperatura;
+}
 
 
 void Paciente::setAtendido(bool valor) { atendido = valor; }
