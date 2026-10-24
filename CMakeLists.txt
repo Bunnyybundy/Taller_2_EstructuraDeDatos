@@ -12,4 +12,8 @@ add_executable(Taller_2_EstructuraDeDatos
         Hospital.cpp
         ArbolDecision.cpp
         ArbolDecision.h
+        NodoAVL.cpp
+        NodoAVL.h
+        ArbolAVL.cpp
+        ArbolAVL.h
 )
