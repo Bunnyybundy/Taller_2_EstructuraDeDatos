@@ -83,7 +83,7 @@ Los registros deben respetar el formato esperado por el programa para poder proc
 
 ## Instrucciones de Compilación y Ejecución
 
-> **Nota de desarrollo:** El proyecto se desarrolla en C++17 y utiliza CMake para su configuración en CLion. También debe comprobarse su compilación en GitHub Codespaces.
+> **Nota de desarrollo:** El proyecto se desarrolla en C++17 y utiliza CMake para su configuración en CLion.
 
 ### 1. Entorno Principal: CLion
 
