@@ -8,7 +8,6 @@ add_executable(Taller_2_EstructuraDeDatos
         Persona.cpp
         Paciente.cpp
         ColaPacientes.cpp
-        PilaHistorial.cpp
         Hospital.cpp
         ArbolDecision.cpp
         ArbolDecision.h
