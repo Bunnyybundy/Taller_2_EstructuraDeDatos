@@ -15,7 +15,7 @@ private:
 
     //Datos clinicos del paciente
     double temperatura;
-    string presionArterial;
+    int presionArterial;
     int dolor;
     string tipoDolor;
     bool trauma;
@@ -37,14 +37,14 @@ public:
     double getTemperatura() const;
     void setTemperatura(double valor);
 
-    string getPresionArterial() const;
-    void setPresionArterial(string valor);
+    int getPresionArterial() const;
+    void setPresionArterial(int valor);
 
     int getDolor() const;
     void setDolor(int valor);
 
     string getTipoDolor() const;
-    void setTipoDolor(string valor);
+    void setTipoDolor(const string& valor);
 
     bool getTrauma() const;
     void setTrauma(bool valor);
@@ -59,6 +59,7 @@ public:
     void setDiasHospitalizacion(int valor);
 
     void mostrarInfo() const override;
+    void mostrarFicha() const;
 };
 
 
