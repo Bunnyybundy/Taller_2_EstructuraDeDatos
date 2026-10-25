@@ -14,7 +14,7 @@ void ArbolDecision::mostrarNodo(Nodo* nodo) const {
 
 void ArbolDecision::preorden(Nodo* nodo) const
 {
-    if (nodo != nullptr)
+    if (nodo == nullptr)
     {
         return;
     }
@@ -30,7 +30,7 @@ void ArbolDecision::mostrarPreorden()const
 }
 void ArbolDecision::inorden(Nodo* nodo) const
 {
-    if (nodo != nullptr)
+    if (nodo == nullptr)
     {
         return;
     }
@@ -41,7 +41,7 @@ void ArbolDecision::inorden(Nodo* nodo) const
 
 void ArbolDecision::postorden(Nodo* nodo) const
 {
-    if (nodo != nullptr)
+    if (nodo == nullptr)
     {
         return;
     }
@@ -157,7 +157,7 @@ string ArbolDecision::textoPregunta(int pregunta) const {
 }
 
 string ArbolDecision::textoRespuesta(int pregunta, bool respuesta) const {
-    switch (respuesta) {
+    switch (pregunta) {
         case 1:
             return respuesta ? "Edad < 14" : "Edad >= 14";
         case 2:

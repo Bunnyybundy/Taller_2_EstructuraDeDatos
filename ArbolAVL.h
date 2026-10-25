@@ -3,6 +3,8 @@
 #define TALLER_2_ESTRUCTURADEDATOS_ARBOLAVL_H
 
 #include "NodoAVL.h"
+#include <string>
+using namespace std;
 
 class ArbolAVL
 {
@@ -23,7 +25,7 @@ class ArbolAVL
         NodoAVL* balancear(NodoAVL* nodo);
 
         NodoAVL* insertar(NodoAVL* nodo, const Paciente& paciente, bool& insertado);
-        NodoAVL* eliminar(NodoAVL* nodo, const string& nombreMinuscula);
+        NodoAVL* eliminar(NodoAVL* nodo, const string& id, bool& eliminado);
         NodoAVL* minimo(NodoAVL* nodo) const;
         const Paciente* buscarNombre(NodoAVL* nodo, const string& nombreMinuscula) const;
 

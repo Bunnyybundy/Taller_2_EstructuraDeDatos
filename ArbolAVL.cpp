@@ -230,7 +230,7 @@ NodoAVL* ArbolAVL::eliminar(NodoAVL* nodo, const string& id, bool& eliminado)
             delete nodo;
             return hijo;   // puede ser nullptr; el padre se encarga de rebalancear
         }
- 
+
         // Dos hijos: se reemplaza por el sucesor inorden
         NodoAVL* sucesor = minimo(nodo->derecha);
         nodo->paciente = sucesor->paciente;
