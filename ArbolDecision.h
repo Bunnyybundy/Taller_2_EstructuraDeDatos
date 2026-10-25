@@ -31,11 +31,22 @@ class ArbolDecision
     void preorden(Nodo* nodo) const;
     void inorden(Nodo* nodo) const;
     void postorden(Nodo* nodo) const;
+    void mostrarNodo(Nodo* nodo) const;
+
+    bool responder(int pregunta, const Paciente& paciente) const;
+
+    string textoPregunta(int pregunta) const;
+    string textoRespuesta(int pregunta, bool respuesta) const;
 
 public:
     ArbolDecision();
     ~ArbolDecision();
+    ArbolDecision(const ArbolDecision&) = delete;
+    ArbolDecision& operator=(const ArbolDecision&) = delete;
 
+    static bool datosValidos(const Paciente& paciente, string& motivo);
+
+    string determinarServicio(const Paciente& paciente, string& ruta) const;
     string determinarServicio(const Paciente& paciente) const;
 
     void mostrarPreorden() const;

@@ -1,6 +1,16 @@
 
 #include "ArbolDecision.h"
 #include "iostream"
+using namespace std;
+
+void ArbolDecision::mostrarNodo(Nodo* nodo) const {
+
+    if (nodo->esHoja) {
+        cout << nodo->servicio << endl;
+    }else {
+        cout << "Pregunta: " << textoPregunta(nodo->pregunta) << endl;
+    }
+}
 
 void ArbolDecision::preorden(Nodo* nodo) const
 {
@@ -8,14 +18,7 @@ void ArbolDecision::preorden(Nodo* nodo) const
     {
         return;
     }
-    if (nodo->esHoja)
-    {
-        cout << nodo->servicio << endl;
-    }
-    else
-    {
-        cout << "Pregunta" << nodo->pregunta << endl;
-    }
+    mostrarNodo(nodo);
     preorden(nodo->si);
     preorden(nodo->no);
 
@@ -32,15 +35,7 @@ void ArbolDecision::inorden(Nodo* nodo) const
         return;
     }
     inorden(nodo->si);
-
-    if (nodo->esHoja)
-    {
-        cout << nodo->servicio << endl;
-    }
-    else
-    {
-        cout << "Pregunta" << nodo->pregunta << endl;
-    }
+    mostrarNodo(nodo);
     inorden(nodo->no);
 }
 
@@ -52,15 +47,7 @@ void ArbolDecision::postorden(Nodo* nodo) const
     }
     postorden(nodo->si);
     postorden(nodo->no);
-
-    if (nodo->esHoja)
-    {
-        cout << nodo->servicio << endl;
-    }
-    else
-    {
-        cout << "Pregunta" << nodo->pregunta << endl;
-    }
+    mostrarNodo(nodo);
 }
 
 void ArbolDecision::mostrarPostorden() const
@@ -148,67 +135,153 @@ ArbolDecision::Nodo* ArbolDecision::construirArbol()
     return edad;
 }
 
+string ArbolDecision::textoPregunta(int pregunta) const {
+    switch (pregunta) {
+        case 1:
+            return "Edad < 14?";
+        case 2:
+            return "RequiereCirugia == 1?";
+        case 3:
+            return "Trauma == 1?";
+        case 4:
+            return "SintomasNeurologicos == 1?";
+        case 5:
+            return "TipoDolor == pecho?";
+        case 6:
+            return "Temperatura >= 38.5 o Dolor >= 8?";
+        case 7:
+            return "DiasHospitalizacion >= 2?";
+        default:
+            return "Pregunta desconocida";
+    }
+}
+
+string ArbolDecision::textoRespuesta(int pregunta, bool respuesta) const {
+    switch (respuesta) {
+        case 1:
+            return respuesta ? "Edad < 14" : "Edad >= 14";
+        case 2:
+            return respuesta ? "RequiereCirugia == 1" : "RequiereCirugia == 0";
+        case 3:
+            return respuesta ? "Trauma == 1" : "Trauma == 0";
+        case 4:
+            return respuesta ? "SintomasNeurologicos == 1" : "SintomasNeurologicos == 0";
+        case 5:
+            return respuesta ? "TipoDolor == pecho" : "TipoDolor != pecho";
+        case 6:
+            return respuesta ? "Temperatura >= 38.5 o Dolor >= 8"
+                             : "Temperatura < 38.5 y Dolor < 8";
+        case 7:
+            return respuesta ? "DiasHospitalizacion >= 2" : "DiasHospitalizacion < 2";
+        default:
+            return "?";
+    }
+}
+
+bool ArbolDecision::datosValidos(const Paciente& paciente, string& motivo) {
+    if (paciente.getEdad() < 0 || paciente.getEdad() > 120) {
+        motivo = "edad fuera de rango (0-120)";
+        return false;
+    }
+    if (paciente.getTemperatura() < 30.0 || paciente.getTemperatura() > 45.0) {
+        motivo = "temperatura fuera de rango (30-45)";
+        return false;
+    }
+    if (paciente.getPresionArterial() < 50 || paciente.getPresionArterial() > 250) {
+        motivo = "presion arterial fuera de rango (50-250)";
+        return false;
+    }
+    if (paciente.getDolor() < 0 || paciente.getDolor() > 10) {
+        motivo = "dolor fuera de rango (0-10)";
+        return false;
+    }
+    string tipo = paciente.getTipoDolor();
+    if (tipo != "pecho" && tipo != "cabeza" && tipo != "abdomen" &&
+        tipo != "extremidad" && tipo != "otro") {
+        motivo = "tipo de dolor no reconocido";
+        return false;
+    }
+    if (paciente.getDiasHospitalizacion() < 0 || paciente.getDiasHospitalizacion() > 365) {
+        motivo = "dias de hospitalizacion fuera de rango (0-365)";
+        return false;
+    }
+    return true;
+}
+
+bool ArbolDecision::responder(int pregunta, const Paciente& paciente) const {
+    switch (pregunta) {
+        case 1:
+            return paciente.getEdad() < 14;
+
+        case 2:
+            return paciente.getRequiereCirugia();
+
+        case 3:
+            return paciente.getTrauma();
+
+        case 4:
+            return paciente.getSintomasNeurologicos();
+
+        case 5:
+            return paciente.getTipoDolor() == "pecho";
+
+        case 6:
+            return paciente.getTemperatura() >= 38.5 ||
+                   paciente.getDolor() >= 8;
+
+        case 7:
+            return paciente.getDiasHospitalizacion() >= 2;
+
+        default:
+            return false;
+    }
+}
+
 string ArbolDecision::determinarServicio(
-    const Paciente& paciente) const
+    const Paciente& paciente, string& ruta) const
 {
+    ruta = "";
+
+    string motivo;
+    if (!datosValidos(paciente, motivo)) {
+        ruta = "Datos invalidos: " + motivo;
+        return "Datos invalidos";
+    }
+
     Nodo* actual = raiz;
 
-    while (actual != nullptr && !actual->esHoja)
-    {
-        bool respuesta = false;
-
-        switch (actual->pregunta)
-        {
-            case 1:
-                respuesta = paciente.getEdad() < 14;
-                break;
-
-            case 2:
-                respuesta = paciente.getRequiereCirugia();
-                break;
-
-            case 3:
-                respuesta = paciente.getTrauma();
-                break;
-
-            case 4:
-                respuesta = paciente.getSintomasNeurologicos();
-                break;
-
-            case 5:
-                respuesta = paciente.getTipoDolor() == "pecho";
-                break;
-
-            case 6:
-                respuesta =
-                    paciente.getTemperatura() >= 38.5 ||
-                    paciente.getDolor() >= 8;
-                break;
-
-            case 7:
-                respuesta = paciente.getDiasHospitalizacion() >= 2;
-                break;
-
-            default:
-                return "Datos invalidos";
+    while (actual != nullptr && !actual->esHoja) {
+        if (actual->pregunta < 1 || actual->pregunta > 7) {
+            ruta = "Pregunta desconocida";
+            return "Datos invalidos";
         }
 
-        if (respuesta)
-        {
+        bool respuesta = responder(actual->pregunta, paciente);
+
+        if (!ruta.empty()) {
+            ruta += " -> ";
+        }
+        ruta += textoRespuesta(actual->pregunta, respuesta);
+
+        if (respuesta) {
             actual = actual->si;
-        }
-        else
-        {
+        }else {
             actual = actual->no;
         }
     }
 
-    if (actual == nullptr)
-    {
+    if (actual == nullptr) {
+        ruta = "Arbol inconsistente";
         return "Datos invalidos";
     }
 
     return actual->servicio;
+}
+
+string ArbolDecision::determinarServicio(
+    const Paciente& paciente) const {
+    string ruta;
+    return determinarServicio(paciente, ruta);
 }
 
 void ArbolDecision::liberarArbol(Nodo* nodo)
