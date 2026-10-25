@@ -2,32 +2,31 @@
 #ifndef TALLER_1_ESTRUCTURADEDATOS_HOSPITAL_H
 #define TALLER_1_ESTRUCTURADEDATOS_HOSPITAL_H
 #include <iostream>
-#include "NodoPaciente.h"
+#include "ArbolAVL.h"
 using namespace std;
 
-struct NodoServicio
-{
-    string nombre;
-    NodoPaciente* paciente;
-    NodoServicio* siguiente;
-
-    NodoServicio(string n): nombre(n), paciente(nullptr), siguiente(nullptr) {}
-};
-
-class Hospital
-{
+class Hospital {
 private:
-    NodoServicio* servicios;
-    NodoServicio* buscarServicio(const string& nombre) const;
+    static const int cantidadServicios = 8;
+
+    string nombres[cantidadServicios];
+    ArbolAVL* arboles[cantidadServicios];
+
+    int indiceServicio(const string& nombre) const;
+    void consultarDepartamento(int indice);
 
 public:
     Hospital();
     ~Hospital();
-    bool agregarPacienteAServicio(Paciente* p);
-    void mostrarServicios();
-    void mostrarPacientesPorServicio(string nombreServicio);
+    Hospital(const Hospital&) = delete;
+    Hospital& operator=(const Hospital&) = delete;
+
+    bool existeId(const string& id) const;
+
+    bool insertarPaciente(const Paciente& paciente, const string& servicio);
+
+    void verDepartamentos();
+    void buscarPaciente(const string& clave) const;
 };
-
-
 
 #endif //TALLER_1_ESTRUCTURADEDATOS_HOSPITAL_H
