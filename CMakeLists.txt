@@ -15,4 +15,6 @@ add_executable(Taller_2_EstructuraDeDatos
         NodoAVL.h
         ArbolAVL.cpp
         ArbolAVL.h
+        Utilidades.h
+        Utilidades.cpp
 )
